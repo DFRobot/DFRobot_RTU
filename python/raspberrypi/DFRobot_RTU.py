@@ -15,7 +15,7 @@ import sys
 import serial
 import time
 
-class DFRobot_RTU:
+class DFRobot_RTU(object):
   
   _packet_header = {"id": 0, "cmd": 1, "cs": 0}
   
