@@ -65,7 +65,7 @@ class DFRobot_RTU(object):
     l = self._packed(id, self.eCMD_READ_COILS, l)
     self._send_package(l)
     l = self.recv_and_parse_package(id, self.eCMD_READ_COILS,1)
-    if (l[0] == 0) and len(l) == 8:
+    if (l[0] == 0) and len(l) == 7:
       if (l[4] & 0x01) != 0:
           val = True
     return val
@@ -88,7 +88,7 @@ class DFRobot_RTU(object):
     l = self._packed(id, self.eCMD_READ_DISCRETE, l)
     self._send_package(l)
     l = self.recv_and_parse_package(id, self.eCMD_READ_DISCRETE,1)
-    if (l[0] == 0) and len(l) == 8:
+    if (l[0] == 0) and len(l) == 7:
       if (l[4] & 0x01) != 0:
           val = True
     return val
