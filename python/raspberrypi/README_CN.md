@@ -62,6 +62,12 @@ To use this library, first download the library file, then open the examples fol
   @param stopbit:  树莓派串口通信停止位参数
 '''
 def __init__(self, baud, bits, parity, stopbit):
+
+'''
+  @brief 设置接收超时时间，单位s.
+  @param timeout:  接收超时形参，单位秒，默认为0.1s
+'''
+def set_timout_time_s(self, timeout = 0.1):
     
 '''
   @brief 读取线圈寄存器的值。

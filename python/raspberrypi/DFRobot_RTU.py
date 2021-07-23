@@ -46,6 +46,14 @@ class DFRobot_RTU(object):
       @param stopbit:  The UART stopbit bits of raspberry pi.
     '''
     self._ser = serial.Serial("/dev/ttyAMA0",baud, bits, parity, stopbit)
+    self._timeout = 0.1 #0.1s
+  
+  def set_timout_time_s(self, timeout = 0.1):
+    '''
+      @brief Set receive timeout time, unit s.
+      @param timeout:  receive timeout time, unit s, default 0.1s.
+    '''
+    self._timeout = timeout
 
   def read_coils_register(self, id, reg):
     '''
@@ -410,7 +418,7 @@ class DFRobot_RTU(object):
           index = 0
         remain = index
         t = time.time()
-      if time.time() - t > 0.1:
+      if time.time() - t > self._timeout:
         #print("time out.")
         return [self.eRTU_RECV_ERROR]
       if(index == 4):
@@ -445,7 +453,7 @@ class DFRobot_RTU(object):
               index += 1
               remain -= 1
               t = time.time()
-            if(time.time() - t > 0.1):
+            if(time.time() - t >self._timeout):
               print("time out1.")
               return [self.eRTU_RECV_ERROR]
           crc = ((package[len(package) - 2] << 8) | package[len(package) - 1]) & 0xFFFF

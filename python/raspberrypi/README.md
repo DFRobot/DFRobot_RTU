@@ -62,6 +62,13 @@ To use this library, first download the library file, then open the examples fol
   @param stopbit:  The UART stopbit bits of raspberry pi.
 '''
 def __init__(self, baud, bits, parity, stopbit):
+
+'''
+  @brief Set receive timeout time, unit s.
+  @param timeout:  receive timeout time, unit s, default 0.1s.
+'''
+def set_timout_time_s(self, timeout):
+
 '''
   @brief Read a coils Register.
   @param id:  modbus device ID. Range: 0x00 ~ 0xF7(0~247), 0x00 is broadcasr address, which all slaves will process broadcast packets, 

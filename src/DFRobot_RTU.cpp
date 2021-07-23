@@ -13,7 +13,11 @@
 #include "DFRobot_RTU.h"
 
 DFRobot_RTU::DFRobot_RTU(Stream *s)
-  : _s(s){}
+  : _s(s), _timeout(100){}
+
+void DFRobot_RTU::setTimeoutTimeMs(uint32_t timeout){
+  _timeout = timeout;
+}
 
 bool DFRobot_RTU::readCoilsRegister(uint8_t id, uint16_t reg){
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), 0x00, 0x01};
@@ -175,7 +179,30 @@ uint8_t DFRobot_RTU::readHoldingRegister(uint8_t id, uint16_t reg, void *data, u
   RTU_DBG(val, HEX);
   return ret;
 }
-uint8_t DFRobot_RTU::writeCoilsRegister(uint8_t id, uint16_t reg, uint16_t regNum, void *data, uint16_t size){
+
+uint8_t DFRobot_RTU::readHoldingRegister(uint8_t id, uint16_t reg, uint16_t *data, uint16_t regNum){
+  uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)((regNum >> 8) & 0xFF), (uint8_t)(regNum & 0xFF)};
+  uint16_t val = 0;
+  uint8_t ret = 0;
+  if(id > 0xF7){
+      RTU_DBG("Device id error");
+      return eRTU_ID_ERROR;
+  }
+  pRtuPacketHeader_t header = packed(id, eCMD_READ_HOLDING, temp, sizeof(temp));
+  sendPackage(header);
+  header = recvAndParsePackage(id, (uint8_t)eCMD_READ_HOLDING, regNum*2, &ret);
+  if((ret == 0) && (header != NULL)){
+      if(data != NULL){
+        for(int i = 0; i < regNum; i++){
+          data[i] = ((header->payload[1+2*i]) << 8) | (header->payload[2+2*i]);
+        }
+      } 
+      free(header);
+  }
+  return ret;
+}
+
+uint8_t DFRobot_RTU::writeCoilsRegister(uint8_t id, uint16_t reg, uint16_t regNum, uint8_t *data, uint16_t size){
   uint16_t length = regNum/8 + ((regNum%8) ? 1 : 0);
   if(size < length) return (uint8_t)eRTU_EXCEPTION_ILLEGAL_DATA_VALUE;
   #if defined(ESP8266)
@@ -222,6 +249,40 @@ uint8_t DFRobot_RTU::writeHoldingRegister(uint8_t id, uint16_t reg, void *data, 
       return (uint8_t)eRTU_ID_ERROR;
   }
   memcpy(temp+5, data, size);
+  pRtuPacketHeader_t header = packed(id, eCMD_WRITE_MULTI_HOLDING, temp, sizeof(temp));
+  sendPackage(header);
+  header = recvAndParsePackage(id, (uint8_t)eCMD_WRITE_MULTI_HOLDING, reg, &ret);
+  size = 0;
+  if((ret == 0) && (header != NULL)){
+      size = (header->payload[2] << 8) | header->payload[3];
+      free(header);
+  }
+  return ret;
+}
+
+uint8_t DFRobot_RTU::writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t *data, uint16_t regNum){
+  uint16_t size = regNum * 2;
+  uint8_t *pBuf = (uint8_t *)data;
+  #if defined(ESP8266)
+  uint8_t temp[size + 5];
+  temp[0] = (uint8_t)((reg >> 8) & 0xFF);
+  temp[1] = (uint8_t)(reg & 0xFF);
+  temp[2] = (uint8_t)(((size/2) >> 8) & 0xFF);
+  temp[3] = (uint8_t)((size/2) & 0xFF);
+  temp[4] = (uint8_t)size;
+  #else
+  uint8_t temp[size + 5] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)(((size/2) >> 8) & 0xFF), (uint8_t)((size/2) & 0xFF),(uint8_t)size};
+  #endif
+  uint8_t ret = 0;
+  if(id > 0xF7){
+      RTU_DBG("Device id error");
+      return (uint8_t)eRTU_ID_ERROR;
+  }
+  //memcpy(temp+5, data, size);
+  for(int i = 0; i < regNum; i++){
+     temp[5+i] =  pBuf[2*i + 1];
+     temp[6+i] =  pBuf[2*i] ;
+  }
   pRtuPacketHeader_t header = packed(id, eCMD_WRITE_MULTI_HOLDING, temp, sizeof(temp));
   sendPackage(header);
   header = recvAndParsePackage(id, (uint8_t)eCMD_WRITE_MULTI_HOLDING, reg, &ret);
@@ -290,7 +351,7 @@ LOOP:
           i = index;
           time = millis();
       }
-      if((millis() - time) > waitFortimeoutMs) {
+      if((millis() - time) > _timeout) {
           RTU_DBG("ERROR");
           break;
       }
@@ -342,7 +403,7 @@ LOOP:
           time = millis();
           remain--;
       }
-      if((millis() - time) > waitFortimeoutMs) {
+      if((millis() - time) > _timeout) {
           free(header);
           if(error != NULL) *error = eRTU_RECV_ERROR;
           RTU_DBG();

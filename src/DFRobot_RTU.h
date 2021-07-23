@@ -71,9 +71,16 @@ public:
 /**
  * @brief DFRobot_RTU abstract class constructor. Construct serial port.
  * @param s:  The class pointer object of Abstract class， here you can fill in the pointer to the serial port object.
+ * @param timeout: Recving timeout time, unit ms,default 100ms
  */
-  DFRobot_RTU(Stream *s);//eUARTDetecteMode
+  DFRobot_RTU(Stream *s);
   ~DFRobot_RTU(){}
+
+/**
+ * @brief Set receive timeout time, unit ms.
+ * @param timeout:  receive timeout time, unit ms, default 100mss.
+ */
+  void setTimeoutTimeMs(uint32_t timeout = 100);
 
 /**
  * @brief Read a coils Register.
@@ -181,6 +188,25 @@ public:
  */
   uint8_t readHoldingRegister(uint8_t id, uint16_t reg, void *data, uint16_t size);
 /**
+ * @brief Read multiple Holding register.
+ * @param id:  modbus device ID. Range: 0x00 ~ 0xF7(0~247), 0x00 is broadcasr address, which all slaves will process broadcast packets, 
+ * @n          but will not answer.
+ * @param reg: Holding register.
+ * @param data: Storage register worth pointer.
+ * @param regNum: register numbers.
+ * @return Exception code:
+ * @n      0 : sucess.
+ * @n      1 or eRTU_EXCEPTION_ILLEGAL_FUNCTION : Illegal function.
+ * @n      2 or eRTU_EXCEPTION_ILLEGAL_DATA_ADDRESS: Illegal data address.
+ * @n      3 or eRTU_EXCEPTION_ILLEGAL_DATA_VALUE:  Illegal data value.
+ * @n      4 or eRTU_EXCEPTION_SLAVE_FAILURE:  Slave failure.
+ * @n      8 or eRTU_EXCEPTION_CRC_ERROR:  CRC check error.
+ * @n      9 or eRTU_RECV_ERROR:  Receive packet error.
+ * @n      10 or eRTU_MEMORY_ERROR: Memory error.
+ * @n      11 or eRTU_ID_ERROR: Broadcasr address or error ID
+ */
+  uint8_t readHoldingRegister(uint8_t id, uint16_t reg, uint16_t *data, uint16_t regNum);
+/**
  * @brief Write multiple coils Register.
  * @param id:  modbus device ID. Range: 0x00 ~ 0xF7(0~247), 0x00 is broadcasr address, which all slaves will process broadcast packets, 
  * @n          but will not answer.
@@ -199,7 +225,7 @@ public:
  * @n      10 or eRTU_MEMORY_ERROR: Memory error.
  * @n      11 or eRTU_ID_ERROR: Broadcasr address or error ID
  */
-  uint8_t writeCoilsRegister(uint8_t id, uint16_t reg, uint16_t regNum, void *data, uint16_t size);
+  uint8_t writeCoilsRegister(uint8_t id, uint16_t reg, uint16_t regNum, uint8_t *data, uint16_t size);
 /**
  * @brief Write multiple Holding Register.
  * @param id:  modbus device ID. Range: 0x00 ~ 0xF7(0~247), 0x00 is broadcasr address, which all slaves will process broadcast packets, 
@@ -219,8 +245,29 @@ public:
  * @n      11 or eRTU_ID_ERROR: Broadcasr address or error ID
  */
   uint8_t writeHoldingRegister(uint8_t id, uint16_t reg, void *data, uint16_t size);
+/**
+ * @brief Write multiple Holding Register.
+ * @param id:  modbus device ID. Range: 0x00 ~ 0xF7(0~247), 0x00 is broadcasr address, which all slaves will process broadcast packets, 
+ * @n          but will not answer.
+ * @param reg: Holding register address.
+ * @param data: Storage register worth pointer.
+ * @param regNum: Number of coils Register..
+ * @return Exception code:
+ * @n      0 : sucess.
+ * @n      1 or eRTU_EXCEPTION_ILLEGAL_FUNCTION : Illegal function.
+ * @n      2 or eRTU_EXCEPTION_ILLEGAL_DATA_ADDRESS: Illegal data address.
+ * @n      3 or eRTU_EXCEPTION_ILLEGAL_DATA_VALUE:  Illegal data value.
+ * @n      4 or eRTU_EXCEPTION_SLAVE_FAILURE:  Slave failure.
+ * @n      8 or eRTU_EXCEPTION_CRC_ERROR:  CRC check error.
+ * @n      9 or eRTU_RECV_ERROR:  Receive packet error.
+ * @n      10 or eRTU_MEMORY_ERROR: Memory error.
+ * @n      11 or eRTU_ID_ERROR: Broadcasr address or error ID
+ */
+  uint8_t writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t *data, uint16_t regNum);
+
   
 private:
+  uint32_t _timeout;
   Stream *_s;
 };
 #endif
