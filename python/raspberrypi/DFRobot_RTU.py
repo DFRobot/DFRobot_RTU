@@ -334,6 +334,9 @@ class DFRobot_RTU(object):
       @n      11 or eRTU_ID_ERROR: Broadcasr address or error ID
     '''
     size = len(data) >> 1
+    mod = len(data) % 2
+    if mod:
+      size += 1
     l = [(reg >> 8)&0xFF, (reg & 0xFF), ((size >> 8) & 0xFF), (size & 0xFF), size*2] + data
     if(id > 0xF7):
       print("device addr error.")
