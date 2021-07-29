@@ -129,7 +129,16 @@ class DFRobot_RTU(object):
       @n          but will not answer.
       @param reg: Coils register address.
       @param flag: The value of the register value which will be write, 0 ro 1.
-      @return Return the value of the coils register write, 0 ro 1.
+      @return Exception code:
+      @n      0 : sucess.
+      @n      1 or eRTU_EXCEPTION_ILLEGAL_FUNCTION : Illegal function.
+      @n      2 or eRTU_EXCEPTION_ILLEGAL_DATA_ADDRESS: Illegal data address.
+      @n      3 or eRTU_EXCEPTION_ILLEGAL_DATA_VALUE:  Illegal data value.
+      @n      4 or eRTU_EXCEPTION_SLAVE_FAILURE:  Slave failure.
+      @n      8 or eRTU_EXCEPTION_CRC_ERROR:  CRC check error.
+      @n      9 or eRTU_RECV_ERROR:  Receive packet error.
+      @n      10 or eRTU_MEMORY_ERROR: Memory error.
+      @n      11 or eRTU_ID_ERROR: Broadcasr address or error ID
     '''
     val = 0x0000
     re = True
@@ -143,13 +152,7 @@ class DFRobot_RTU(object):
     l = self._packed(id, self.eCMD_WRITE_COILS, l)
     self._send_package(l)
     l = self.recv_and_parse_package(id, self.eCMD_WRITE_COILS,reg)
-    if (l[0] == 0) and len(l) == 9:
-      if val == (((l[5] << 8) | l[6]) & 0xFFFF):
-        re = flag
-    if re:
-      return True
-    else:
-      return False
+    return l[0]
       
 
   def write_holding_register(self, id, reg, val):
@@ -159,7 +162,16 @@ class DFRobot_RTU(object):
       @n          but will not answer.
       @param reg: Holding register address.
       @param val: The value of the register value which will be write.
-      @return Return the value of the holding register.
+      @return Exception code:
+      @n      0 : sucess.
+      @n      1 or eRTU_EXCEPTION_ILLEGAL_FUNCTION : Illegal function.
+      @n      2 or eRTU_EXCEPTION_ILLEGAL_DATA_ADDRESS: Illegal data address.
+      @n      3 or eRTU_EXCEPTION_ILLEGAL_DATA_VALUE:  Illegal data value.
+      @n      4 or eRTU_EXCEPTION_SLAVE_FAILURE:  Slave failure.
+      @n      8 or eRTU_EXCEPTION_CRC_ERROR:  CRC check error.
+      @n      9 or eRTU_RECV_ERROR:  Receive packet error.
+      @n      10 or eRTU_MEMORY_ERROR: Memory error.
+      @n      11 or eRTU_ID_ERROR: Broadcasr address or error ID
     '''
     l = [(reg >> 8)&0xFF, (reg & 0xFF), (val >> 8)&0xFF, (val & 0xFF)]
     val = 0
@@ -169,9 +181,7 @@ class DFRobot_RTU(object):
     l = self._packed(id, self.eCMD_WRITE_HOLDING, l)
     self._send_package(l)
     l = self.recv_and_parse_package(id, self.eCMD_WRITE_HOLDING,reg)
-    if (l[0] == 0) and len(l) == 9:
-      val = ((l[5] << 8) | l[6]) & 0xFFFF
-    return val
+    return l[0]
       
   def read_coils_registers(self, id, reg, reg_num):
     '''
@@ -334,9 +344,6 @@ class DFRobot_RTU(object):
       @n      11 or eRTU_ID_ERROR: Broadcasr address or error ID
     '''
     size = len(data) >> 1
-    mod = len(data) % 2
-    if mod:
-      size += 1
     l = [(reg >> 8)&0xFF, (reg & 0xFF), ((size >> 8) & 0xFF), (size & 0xFF), size*2] + data
     if(id > 0xF7):
       print("device addr error.")

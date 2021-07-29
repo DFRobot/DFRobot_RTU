@@ -106,7 +106,16 @@ def read_holding_register(self, id, reg):
   @n          but will not answer.
   @param reg: Coils register address.
   @param flag: The value of the register value which will be write, True ro False.
-  @return Return the value of the coils register write, 0 ro 1.
+  @return Exception code:
+  @n      0 : sucess.
+  @n      1 or eRTU_EXCEPTION_ILLEGAL_FUNCTION : Illegal function.
+  @n      2 or eRTU_EXCEPTION_ILLEGAL_DATA_ADDRESS: Illegal data address.
+  @n      3 or eRTU_EXCEPTION_ILLEGAL_DATA_VALUE:  Illegal data value.
+  @n      4 or eRTU_EXCEPTION_SLAVE_FAILURE:  Slave failure.
+  @n      8 or eRTU_EXCEPTION_CRC_ERROR:  CRC check error.
+  @n      9 or eRTU_RECV_ERROR:  Receive packet error.
+  @n      10 or eRTU_MEMORY_ERROR: Memory error.
+  @n      11 or eRTU_ID_ERROR: Broadcasr address or error ID
 '''
 def write_coils_register(self, id, reg, flag):
 
@@ -116,7 +125,16 @@ def write_coils_register(self, id, reg, flag):
   @n          but will not answer.
   @param reg: Holding register address.
   @param val: The value of the register value which will be write.
-  @return Return the value of the holding register.
+  @return Exception code:
+  @n      0 : sucess.
+  @n      1 or eRTU_EXCEPTION_ILLEGAL_FUNCTION : Illegal function.
+  @n      2 or eRTU_EXCEPTION_ILLEGAL_DATA_ADDRESS: Illegal data address.
+  @n      3 or eRTU_EXCEPTION_ILLEGAL_DATA_VALUE:  Illegal data value.
+  @n      4 or eRTU_EXCEPTION_SLAVE_FAILURE:  Slave failure.
+  @n      8 or eRTU_EXCEPTION_CRC_ERROR:  CRC check error.
+  @n      9 or eRTU_RECV_ERROR:  Receive packet error.
+  @n      10 or eRTU_MEMORY_ERROR: Memory error.
+  @n      11 or eRTU_ID_ERROR: Broadcasr address or error ID
 '''
 def write_holding_register(self, id, reg, val):
 

@@ -95,18 +95,36 @@ uint16_t readHoldingRegister(uint8_t id, uint16_t reg);
  * @n          but will not answer.
  * @param reg: Coils register address.
  * @param flag: The value of the register value which will be write, 0 ro 1.
- * @return Return the value of the coils register write, 0 ro 1.
+ * @return Exception code:
+ * @n      0 : sucess.
+ * @n      1 or eRTU_EXCEPTION_ILLEGAL_FUNCTION : Illegal function.
+ * @n      2 or eRTU_EXCEPTION_ILLEGAL_DATA_ADDRESS: Illegal data address.
+ * @n      3 or eRTU_EXCEPTION_ILLEGAL_DATA_VALUE:  Illegal data value.
+ * @n      4 or eRTU_EXCEPTION_SLAVE_FAILURE:  Slave failure.
+ * @n      8 or eRTU_EXCEPTION_CRC_ERROR:  CRC check error.
+ * @n      9 or eRTU_RECV_ERROR:  Receive packet error.
+ * @n      10 or eRTU_MEMORY_ERROR: Memory error.
+ * @n      11 or eRTU_ID_ERROR: Broadcasr address or error ID
  */
-  bool writeCoilsRegister(uint8_t id, uint16_t reg, bool flag);
+  uint8_t writeCoilsRegister(uint8_t id, uint16_t reg, bool flag);
   
 /**
  * @brief Write a holding register.
  * @param id:  modbus device ID. Range: 0x00 ~ 0xF7(0~247), 0x00 is broadcasr address, which all slaves will process broadcast packets, 
  * @n          but will not answer.
  * @param reg: Holding register address.
- * @return Return the value of the holding register.
+ * @return Exception code:
+ * @n      0 : sucess.
+ * @n      1 or eRTU_EXCEPTION_ILLEGAL_FUNCTION : Illegal function.
+ * @n      2 or eRTU_EXCEPTION_ILLEGAL_DATA_ADDRESS: Illegal data address.
+ * @n      3 or eRTU_EXCEPTION_ILLEGAL_DATA_VALUE:  Illegal data value.
+ * @n      4 or eRTU_EXCEPTION_SLAVE_FAILURE:  Slave failure.
+ * @n      8 or eRTU_EXCEPTION_CRC_ERROR:  CRC check error.
+ * @n      9 or eRTU_RECV_ERROR:  Receive packet error.
+ * @n      10 or eRTU_MEMORY_ERROR: Memory error.
+ * @n      11 or eRTU_ID_ERROR: Broadcasr address or error ID
  */
-uint16_t writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t val);
+uint8_t writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t val);
 
 /**
  * @brief Read multiple coils Register.

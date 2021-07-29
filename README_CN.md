@@ -93,16 +93,25 @@ uint16_t readHoldingRegister(uint8_t id, uint16_t reg);
  * @param flag: 要写入的线圈寄存器的值,0 或 1。
  * @return 返回写线圈寄存起的值, 0 或 1。
  */
-  bool writeCoilsRegister(uint8_t id, uint16_t reg, bool flag);
+  uint8_t writeCoilsRegister(uint8_t id, uint16_t reg, bool flag);
   
 /**
  * @brief 写单个保持寄存器的值。
  * @param id:  modbus 设备ID，范围0~0xF7(0~247)，其中0x00为广播地址，所有modbus从机都会处理广播包，但不会应答。
  * @param reg: 保持寄存器地址.
  * @param val: 要写入的保持寄存器的值。
- * @return 返回写保持寄存起的值。
+ * @return Exception code:
+ * @n      0 : sucess.
+ * @n      1 or eRTU_EXCEPTION_ILLEGAL_FUNCTION : 非法功能.
+ * @n      2 or eRTU_EXCEPTION_ILLEGAL_DATA_ADDRESS: 非法数据地址.
+ * @n      3 or eRTU_EXCEPTION_ILLEGAL_DATA_VALUE:  非法数据值.
+ * @n      4 or eRTU_EXCEPTION_SLAVE_FAILURE:  从机故障.
+ * @n      8 or eRTU_EXCEPTION_CRC_ERROR:  CRC校验错误.
+ * @n      9 or eRTU_RECV_ERROR:  接收包错误.
+ * @n      10 or eRTU_MEMORY_ERROR: 内存错误.
+ * @n      11 or eRTU_ID_ERROR:广播地址或错误ID(因为主机无法收到从机广播包的应答)
  */
-uint16_t writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t val);
+uint8_t writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t val);
 
 /**
  * @brief 读多个线圈寄存器的值。

@@ -15,6 +15,9 @@
 DFRobot_RTU::DFRobot_RTU(Stream *s)
   : _s(s), _timeout(100){}
 
+DFRobot_RTU::DFRobot_RTU()
+  : _s(NULL), _timeout(100){}
+
 void DFRobot_RTU::setTimeoutTimeMs(uint32_t timeout){
   _timeout = timeout;
 }
@@ -23,7 +26,7 @@ bool DFRobot_RTU::readCoilsRegister(uint8_t id, uint16_t reg){
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), 0x00, 0x01};
   bool val = false;
   uint8_t ret = 0;
-  if(id > 0xF7){
+  if((id == 0) && (id > 0xF7)){
       RTU_DBG("Device id error");
       return 0;
   }
@@ -42,7 +45,7 @@ bool DFRobot_RTU::readDiscreteInputsRegister(uint8_t id, uint16_t reg){
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), 0x00, 0x01};
   bool val = false;
   uint8_t ret = 0;
-  if(id > 0xF7){
+  if((id == 0) && (id > 0xF7)){
       RTU_DBG("Device id error");
       return 0;
   }
@@ -61,7 +64,7 @@ uint16_t DFRobot_RTU::readHoldingRegister(uint8_t id, uint16_t reg){
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), 0x00, 0x01};
   uint16_t val = 0;
   uint8_t ret = 0;
-  if(id > 0xF7){
+  if((id == 0) && (id > 0xF7)){
       RTU_DBG("Device id error");
       return 0;
   }
@@ -76,7 +79,7 @@ uint16_t DFRobot_RTU::readHoldingRegister(uint8_t id, uint16_t reg){
   return val;
 }
 
-bool DFRobot_RTU::writeCoilsRegister(uint8_t id, uint16_t reg, bool flag){
+uint8_t DFRobot_RTU::writeCoilsRegister(uint8_t id, uint16_t reg, bool flag){
   uint16_t val = flag ? 0xFF00 : 0x0000;
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)((val >> 8) & 0xFF), (uint8_t)(val & 0xFF)};
   bool re = !flag;
@@ -88,16 +91,16 @@ bool DFRobot_RTU::writeCoilsRegister(uint8_t id, uint16_t reg, bool flag){
   pRtuPacketHeader_t header = packed(id, eCMD_WRITE_COILS, temp, sizeof(temp));
   sendPackage(header);
   header = recvAndParsePackage(id, (uint8_t)eCMD_WRITE_COILS, reg, &ret);
-  if((ret == 0) && (header != NULL)){
-      if(val == (((header->payload[2] << 8) | header->payload[3]) & 0xFFFF)){
-        re = flag;
-      }
-      free(header);
-  }
-  RTU_DBG(val, HEX);
-  return re;
+  //if((ret == 0) && (header != NULL)){
+  //    if(val == (((header->payload[2] << 8) | header->payload[3]) & 0xFFFF)){
+  //      re = flag;
+  //    }
+  //    free(header);
+  //}
+  //RTU_DBG(val, HEX);
+  return ret;
 }
-uint16_t DFRobot_RTU::writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t val){
+uint8_t DFRobot_RTU::writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t val){
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)((val >> 8) & 0xFF), (uint8_t)(val & 0xFF)};
   uint8_t ret = 0;
   if(id > 0xF7){
@@ -107,13 +110,13 @@ uint16_t DFRobot_RTU::writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t va
   pRtuPacketHeader_t header = packed(id, eCMD_WRITE_HOLDING, temp, sizeof(temp));
   sendPackage(header);
   header = recvAndParsePackage(id, (uint8_t)eCMD_WRITE_HOLDING, reg, &ret);
-  val = 0xFFFF;
-  if((ret == 0) && (header != NULL)){
-      val = (header->payload[2] << 8) | header->payload[3];
-      free(header);
-  }
-  RTU_DBG(val, HEX);
-  return val;
+  //val = 0xFFFF;
+  //if((ret == 0) && (header != NULL)){
+  //    val = (header->payload[2] << 8) | header->payload[3];
+  //    free(header);
+  //}
+  //RTU_DBG(val, HEX);
+  return ret;
 }
 
 uint8_t DFRobot_RTU::readCoilsRegister(uint8_t id, uint16_t reg, uint16_t regNum, uint8_t *data, uint16_t size){
@@ -121,7 +124,7 @@ uint8_t DFRobot_RTU::readCoilsRegister(uint8_t id, uint16_t reg, uint16_t regNum
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)((regNum >> 8) & 0xFF), (uint8_t)(regNum & 0xFF)};
   uint16_t val = 0;
   uint8_t ret = 0;
-  if(id > 0xF7){
+  if((id == 0) && (id > 0xF7)){
       RTU_DBG("Device id error");
       return eRTU_ID_ERROR;
   }
@@ -143,7 +146,7 @@ uint8_t DFRobot_RTU::readDiscreteInputsRegister(uint8_t id, uint16_t reg, uint16
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)((regNum >> 8) & 0xFF), (uint8_t)(regNum & 0xFF)};
   uint16_t val = 0;
   uint8_t ret = 0;
-  if(id > 0xF7){
+  if((id == 0) && (id > 0xF7)){
       RTU_DBG("Device id error");
       return eRTU_ID_ERROR;
   }
@@ -165,7 +168,7 @@ uint8_t DFRobot_RTU::readHoldingRegister(uint8_t id, uint16_t reg, void *data, u
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)((length >> 8) & 0xFF), (uint8_t)(length & 0xFF)};
   uint16_t val = 0;
   uint8_t ret = 0;
-  if(id > 0xF7){
+  if((id == 0) && (id > 0xF7)){
       RTU_DBG("Device id error");
       return eRTU_ID_ERROR;
   }
@@ -184,7 +187,7 @@ uint8_t DFRobot_RTU::readHoldingRegister(uint8_t id, uint16_t reg, uint16_t *dat
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)((regNum >> 8) & 0xFF), (uint8_t)(regNum & 0xFF)};
   uint16_t val = 0;
   uint8_t ret = 0;
-  if(id > 0xF7){
+  if((id == 0) && (id > 0xF7)){
       RTU_DBG("Device id error");
       return eRTU_ID_ERROR;
   }
@@ -321,12 +324,19 @@ void DFRobot_RTU::sendPackage(pRtuPacketHeader_t header){
   if(header != NULL){
       _s->write((uint8_t *)&(header->id), header->len);
       delay(5);
+      if(header->id == 0){
+        delay(_timeout);
+      }
       free(header);
   }
 }
 
 DFRobot_RTU::pRtuPacketHeader_t DFRobot_RTU::recvAndParsePackage(uint8_t id, uint8_t cmd, uint16_t data, uint8_t *error){
-  if(id < 1 || id > 0xF7) return NULL;
+  if(id > 0xF7) return NULL;
+  if(id == 0){//广播包不会有接收数据
+    if (error != NULL) *error = 0;
+    return NULL;
+  }
   
   uint8_t head[4] = {0, 0, 0, 0};
   uint16_t crc = 0;
@@ -343,6 +353,7 @@ LOOP:
       if(_s->available()){
 
           head[index++] = (uint8_t)_s->read();
+          RTU_DBG(head[index-1],HEX);
           if((index == 1) && (head[0] != id)){
               index = 0;
           }else if((index == 2) && ((head[1]&0x7F) != cmd)){
@@ -353,6 +364,7 @@ LOOP:
       }
       if((millis() - time) > _timeout) {
           RTU_DBG("ERROR");
+          RTU_DBG(millis() - time);
           break;
       }
   }
