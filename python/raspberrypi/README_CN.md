@@ -98,6 +98,14 @@ def read_discrete_inputs_register(self, id, reg):
 def read_holding_register(self, id, reg):
 
 '''
+  @brief 读取输入寄存器的值。
+  @param id:   modbus 设备ID，范围0~0xF7(0~247)，其中0x00为广播地址，所有modbus从机都会处理广播包，但不会应答。
+  @param reg: 输入寄存器地址。
+  @return 返回输入寄存器的值。
+'''
+def read_input_register(self, id, reg):
+
+'''
   @brief 写单个线圈寄存器的值。
   @param id:   modbus 设备ID，范围0~0xF7(0~247)，其中0x00为广播地址，所有modbus从机都会处理广播包，但不会应答。
   @param reg: 线圈寄存器地址。
@@ -174,6 +182,26 @@ def read_discrete_inputs_registers(self, id, reg, reg_num):
   @n      list[1:]: 读取的保持寄存器的值.
 '''
 def read_holding_registers(self, id, reg, size):
+
+'''
+  @brief 读取多个输入寄存器的值。
+  @param id:  modbus 设备ID，范围0~0xF7(0~247)，其中0x00为广播地址，所有modbus从机都会处理广播包，但不会应答。
+  @param reg: 读取输入寄存器的起始地址。
+  @param len: 读取输入寄存器的个数
+  @return 列表: 格式如下:
+  @n      list[0]: Exception code:
+  @n               0 : sucess.
+  @n               1 or eRTU_EXCEPTION_ILLEGAL_FUNCTION : 非法功能.
+  @n               2 or eRTU_EXCEPTION_ILLEGAL_DATA_ADDRESS: 非法数据地址.
+  @n               3 or eRTU_EXCEPTION_ILLEGAL_DATA_VALUE:  非法数据值.
+  @n               4 or eRTU_EXCEPTION_SLAVE_FAILURE:  从机故障.
+  @n               8 or eRTU_EXCEPTION_CRC_ERROR:  CRC校验错误.
+  @n               9 or eRTU_RECV_ERROR:  接收包错误.
+  @n               10 or eRTU_MEMORY_ERROR: 内存错误.
+  @n               11 or eRTU_ID_ERROR:广播地址或错误ID(因为主机无法收到从机广播包的应答)
+  @n      list[1:]: 读取的输入寄存器的值.
+'''
+def read_input_registers(self, id, reg, size):
 
 '''
   @brief 写多个线圈寄存器的值。

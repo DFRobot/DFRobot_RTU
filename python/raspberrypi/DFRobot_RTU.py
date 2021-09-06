@@ -32,6 +32,7 @@ class DFRobot_RTU(object):
   eCMD_READ_COILS           = 0x01
   eCMD_READ_DISCRETE        = 0x02
   eCMD_READ_HOLDING         = 0x03
+  eCMD_READ_INPUT           = 0x04
   eCMD_WRITE_COILS          = 0x05
   eCMD_WRITE_HOLDING        = 0x06
   eCMD_WRITE_MULTI_COILS    = 0x0F
@@ -116,6 +117,27 @@ class DFRobot_RTU(object):
     l = self._packed(id, self.eCMD_READ_HOLDING, l)
     self._send_package(l)
     l = self.recv_and_parse_package(id, self.eCMD_READ_HOLDING,2)
+    if (l[0] == 0) and len(l) == 8:
+      l[0] = ((l[4] << 8) | l[5]) & 0xFFFF
+    else:
+      l[0] = 0
+    return l[0]
+
+  def read_input_register(self, id, reg):
+    '''
+      @brief Read a input Register.
+      @param id:  modbus device ID. Range: 0x00 ~ 0xF7(0~247), 0x00 is broadcasr address, which all slaves will process broadcast packets, 
+      @n          but will not answer.
+      @param reg: Input register address.
+      @return Return the value of the holding register value.
+    '''
+    l = [(reg >> 8)&0xFF, (reg & 0xFF), 0x00, 0x01]
+    if (id < 1) or (id > 0xF7):
+      print("device addr error.(1~247) %d"%id)
+      return 0
+    l = self._packed(id, self.eCMD_READ_INPUT, l)
+    self._send_package(l)
+    l = self.recv_and_parse_package(id, self.eCMD_READ_INPUT,2)
     if (l[0] == 0) and len(l) == 8:
       l[0] = ((l[4] << 8) | l[5]) & 0xFFFF
     else:
@@ -282,6 +304,40 @@ class DFRobot_RTU(object):
     l = self._packed(id, self.eCMD_READ_HOLDING, l)
     self._send_package(l)
     l = self.recv_and_parse_package(id, self.eCMD_READ_HOLDING,size*2)
+    #lin = ['%02X' % i for i in l]
+    #print(" ".join(lin))
+    if (l[0] == 0) and (len(l) == (5+size*2+1)):
+      la = [l[0]] + l[4: len(l)-2]
+      return la
+    return [l[0]]
+
+  def read_input_registers(self, id, reg, size):
+    '''
+      @brief Read multiple input register.
+      @param id:  modbus device ID. Range: 0x00 ~ 0xF7(0~247), 0x00 is broadcasr address, which all slaves will process broadcast packets, 
+      @n          but will not answer.
+      @param reg: Read the start address of the input register.
+      @param size: Number of read input register.
+      @return list: format as follow:
+      @n      list[0]: Exception code:
+      @n               0 : sucess.
+      @n               1 or eRTU_EXCEPTION_ILLEGAL_FUNCTION : Illegal function.
+      @n               2 or eRTU_EXCEPTION_ILLEGAL_DATA_ADDRESS: Illegal data address.
+      @n               3 or eRTU_EXCEPTION_ILLEGAL_DATA_VALUE:  Illegal data value.
+      @n               4 or eRTU_EXCEPTION_SLAVE_FAILURE:  Slave failure.
+      @n               8 or eRTU_EXCEPTION_CRC_ERROR:  CRC check error.
+      @n               9 or eRTU_RECV_ERROR:  Receive packet error.
+      @n               10 or eRTU_MEMORY_ERROR: Memory error.
+      @n               11 or eRTU_ID_ERROR: Broadcasr address or error ID
+      @n      list[1:]: The value list of the input register.
+    '''
+    l = [(reg >> 8)&0xFF, (reg & 0xFF), (size >> 8) & 0xFF, size & 0xFF]
+    if (id < 1) or (id > 0xF7):
+      print("device addr error.(1~247) %d"%id)
+      return [self.eRTU_ID_ERROR]
+    l = self._packed(id, self.eCMD_READ_INPUT, l)
+    self._send_package(l)
+    l = self.recv_and_parse_package(id, self.eCMD_READ_INPUT,size*2)
     #lin = ['%02X' % i for i in l]
     #print(" ".join(lin))
     if (l[0] == 0) and (len(l) == (5+size*2+1)):

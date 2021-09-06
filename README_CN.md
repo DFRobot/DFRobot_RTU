@@ -87,6 +87,14 @@ uint16_t readDiscreteInputsRegister(uint8_t id, uint16_t reg);
 uint16_t readHoldingRegister(uint8_t id, uint16_t reg);
 
 /**
+ * @brief 读取输入寄存器的值。
+ * @param id:  modbus 设备ID，范围0~0xF7(0~247)，其中0x00为广播地址，所有modbus从机都会处理广播包，但不会应答。
+ * @param reg: 输入寄存器地址.
+ * @return 返回输入寄存器的值。
+ */
+  uint16_t readInputRegister(uint8_t id, uint16_t reg);
+
+/**
  * @brief 写单个线圈寄存器的值。
  * @param id:  modbus 设备ID，范围0~0xF7(0~247)，其中0x00为广播地址，所有modbus从机都会处理广播包，但不会应答。
  * @param reg: 线圈寄存器地址.
@@ -171,6 +179,27 @@ uint8_t readDiscreteInputsRegister(uint8_t id, uint16_t reg, uint16_t regNum, ui
  * @n      11 or eRTU_ID_ERROR:广播地址或错误ID(因为主机无法收到从机广播包的应答)
  */
 uint8_t readHoldingRegister(uint8_t id, uint16_t reg, void *data, uint16_t size);
+
+
+/**
+ * @brief 读多个输入寄存器的值。
+ * @param id:  modbus 设备ID，范围0~0xF7(0~247)，其中0x00为广播地址，所有modbus从机都会处理广播包，但不会应答。
+ * @param reg: 读输入寄存器的起始地址.
+ * @param data: 存储要读取的数据的指针.
+ * @param size: 要读取的字节数.
+ * @return Exception code:
+ * @n      0 : sucess.
+ * @n      1 or eRTU_EXCEPTION_ILLEGAL_FUNCTION : 非法功能.
+ * @n      2 or eRTU_EXCEPTION_ILLEGAL_DATA_ADDRESS: 非法数据地址.
+ * @n      3 or eRTU_EXCEPTION_ILLEGAL_DATA_VALUE:  非法数据值.
+ * @n      4 or eRTU_EXCEPTION_SLAVE_FAILURE:  从机故障.
+ * @n      8 or eRTU_EXCEPTION_CRC_ERROR:  CRC校验错误.
+ * @n      9 or eRTU_RECV_ERROR:  接收包错误.
+ * @n      10 or eRTU_MEMORY_ERROR: 内存错误.
+ * @n      11 or eRTU_ID_ERROR:广播地址或错误ID(因为主机无法收到从机广播包的应答)
+ */
+  uint8_t readInputRegister(uint8_t id, uint16_t reg, void *data, uint16_t size);
+
 /**
  * @brief 读多个保持寄存器的值。
  * @param id:  modbus 设备ID，范围0~0xF7(0~247)，其中0x00为广播地址，所有modbus从机都会处理广播包，但不会应答。
@@ -189,6 +218,25 @@ uint8_t readHoldingRegister(uint8_t id, uint16_t reg, void *data, uint16_t size)
  * @n      11 or eRTU_ID_ERROR:广播地址或错误ID(因为主机无法收到从机广播包的应答)
  */
   uint8_t readHoldingRegister(uint8_t id, uint16_t reg, uint16_t *data, uint16_t regNum);
+
+  /**
+ * @brief 读多个输入寄存器的值。
+ * @param id:  modbus 设备ID，范围0~0xF7(0~247)，其中0x00为广播地址，所有modbus从机都会处理广播包，但不会应答。
+ * @param reg: 读输入寄存器的起始地址.
+ * @param data: 存储要读取的数据的指针.
+ * @param size: 要读取的字节数.
+ * @return Exception code:
+ * @n      0 : sucess.
+ * @n      1 or eRTU_EXCEPTION_ILLEGAL_FUNCTION : 非法功能.
+ * @n      2 or eRTU_EXCEPTION_ILLEGAL_DATA_ADDRESS: 非法数据地址.
+ * @n      3 or eRTU_EXCEPTION_ILLEGAL_DATA_VALUE:  非法数据值.
+ * @n      4 or eRTU_EXCEPTION_SLAVE_FAILURE:  从机故障.
+ * @n      8 or eRTU_EXCEPTION_CRC_ERROR:  CRC校验错误.
+ * @n      9 or eRTU_RECV_ERROR:  接收包错误.
+ * @n      10 or eRTU_MEMORY_ERROR: 内存错误.
+ * @n      11 or eRTU_ID_ERROR:广播地址或错误ID(因为主机无法收到从机广播包的应答)
+ */
+  uint8_t readInputRegister(uint8_t id, uint16_t reg, uint16_t *data, uint16_t size);
 
 /**
  * @brief 写多个线圈寄存器的值。

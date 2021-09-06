@@ -101,6 +101,15 @@ def read_discrete_inputs_register(self, id, reg):
 def read_holding_register(self, id, reg):
 
 '''
+  @brief Read a input Register.
+  @param id:  modbus device ID. Range: 0x00 ~ 0xF7(0~247), 0x00 is broadcasr address, which all slaves will process broadcast packets, 
+  @n          but will not answer.
+  @param reg: Input register address.
+  @return Return the value of the holding register value.
+'''
+def read_input_register(self, id, reg):
+
+'''
   @brief Write a coils Register.
   @param id:  modbus device ID. Range: 0x00 ~ 0xF7(0~247), 0x00 is broadcasr address, which all slaves will process broadcast packets, 
   @n          but will not answer.
@@ -201,6 +210,27 @@ def read_discrete_inputs_registers(self, id, reg, reg_num):
 '''
 def read_holding_registers(self, id, reg, size):
 
+'''
+  @brief Read multiple input register.
+  @param id:  modbus device ID. Range: 0x00 ~ 0xF7(0~247), 0x00 is broadcasr address, which all slaves will process broadcast packets, 
+  @n          but will not answer.
+  @param reg: Read the start address of the input register.
+  @param size: Number of read input register.
+  @return list: format as follow:
+  @n      list[0]: Exception code:
+  @n               0 : sucess.
+  @n               1 or eRTU_EXCEPTION_ILLEGAL_FUNCTION : Illegal function.
+  @n               2 or eRTU_EXCEPTION_ILLEGAL_DATA_ADDRESS: Illegal data address.
+  @n               3 or eRTU_EXCEPTION_ILLEGAL_DATA_VALUE:  Illegal data value.
+  @n               4 or eRTU_EXCEPTION_SLAVE_FAILURE:  Slave failure.
+  @n               8 or eRTU_EXCEPTION_CRC_ERROR:  CRC check error.
+  @n               9 or eRTU_RECV_ERROR:  Receive packet error.
+  @n               10 or eRTU_MEMORY_ERROR: Memory error.
+  @n               11 or eRTU_ID_ERROR: Broadcasr address or error ID
+  @n      list[1:]: The value list of the input register.
+'''
+def read_input_registers(self, id, reg, size):
+    
 '''
   @brief Write multiple coils Register.
   @param id:  modbus device ID. Range: 0x00 ~ 0xF7(0~247), 0x00 is broadcasr address, which all slaves will process broadcast packets, 
