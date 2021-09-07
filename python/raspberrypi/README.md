@@ -6,6 +6,7 @@ Modbus RTU libary for raspberrypi. The supported modbus commands are as follows�
 * 0x01: Read one or multiple coils register;
 * 0x02: Read one or multiple discrete inputs register;
 * 0x03: Read one or multiple holding register;
+* 0x04: Read one or multiple input register;
 * 0x05: Write a coils register;
 * 0x06: write a holding register;
 * 0x0F: Write multiple coils register;
@@ -33,13 +34,14 @@ Modbus RTU libary for raspberrypi. The supported modbus commands are as follows�
 This is a modbus RTU libary  for Arduino by DFRobot.<br>
 
 ## Connected
-Hardware conneted table<br>
- Sensor      |               raspberrypi         |
------------- | :-------------------------------: |
-VCC          |                5V                 |
-GND          |                GND                |
-RX           |connected to the UART TX pin of MCU|
-TX           |connected to the UART RX pin of MCU|
+Hardware conneted table 
+
+Sensor      |               raspberrypi         
+------------ | :-------------------------------: 
+VCC          |                5V                 
+GND          |                GND                
+RX           |connected to the UART TX pin of MCU
+TX           |connected to the UART RX pin of MCU
 
 ## Installation
 To use this library, first download the library file, then open the examples folder and run the demo in the folder Proceed as follows:
@@ -274,16 +276,16 @@ def write_holding_registers(self, id, reg, data):
 
 ## Compatibility
 
-MCU                | SoftwareSerial | HardwareSerial |  IO   |
------------------- | :----------: | :----------: | :---------: |
-Arduino Uno        |      √       |      X       |      √       |
-Mega2560           |      √       |      √       |      √       |
-Leonardo           |      √       |      √       |      √       |
-ESP32              |      X       |      √       |      √       |
-ESP8266            |      √       |      X       |      √       |
-micro:bit          |      X       |      X       |      √       |
-FireBeetle M0      |      X       |      √       |      √       |
-raspberry          |      X       |      √       |      √       |
+MCU                | SoftwareSerial | HardwareSerial |  IO   
+------------------ | :----------: | :----------: | :---------: 
+Arduino Uno        |      √       |      X       |      √       
+Mega2560           |      √       |      √       |      √       
+Leonardo           |      √       |      √       |      √       
+ESP32              |      X       |      √       |      √       
+ESP8266            |      √       |      X       |      √       
+micro:bit          |      X       |      X       |      √       
+FireBeetle M0      |      X       |      √       |      √       
+raspberry          |      X       |      √       |      √       
 
 ## History
 
