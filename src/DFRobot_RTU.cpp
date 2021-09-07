@@ -439,6 +439,7 @@ LOOP:
       case eCMD_READ_COILS:
       case eCMD_READ_DISCRETE:
       case eCMD_READ_HOLDING:
+      case eCMD_READ_INPUT:
            if(head[2] != (data & 0xFF)) {
                index = 0;
                goto LOOP;
