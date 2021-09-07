@@ -6,6 +6,7 @@ Modbus RTU libary for Arduino. The supported modbus commands are as follows：<b
 * 0x01: Read one or multiple coils register;
 * 0x02: Read one or multiple discrete inputs register;
 * 0x03: Read one or multiple holding register;
+* 0x04: Read one or multiple input register;
 * 0x05: Write a coils register;
 * 0x06: write a holding register;
 * 0x0F: Write multiple coils register;
