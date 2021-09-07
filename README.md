@@ -32,7 +32,8 @@ Modbus RTU libary for Arduino. The supported modbus commands are as follows：<b
 This is a modbus RTU libary  for Arduino by DFRobot.<br>
 
 ## Connected
-Hardware conneted table<br>
+Hardware conneted table 
+
 Sensor      |               MCU                 |
 ------------ | :-------------------------------: |
 VCC          |                5V                 |
