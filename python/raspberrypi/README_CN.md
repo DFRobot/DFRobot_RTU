@@ -5,7 +5,8 @@
 这是一个基于Modbus RTU协议的raspberry pi python modbus库，它支持以下几种modbus协议命令：<br>
 * 0x01: 读一个或多个线圈寄存器；
 * 0x02: 读一个或多个离散输入寄存器；
-* 0x03: 读一个或多个保持寄存器。
+* 0x03: 读一个或多个保持寄存器；
+* 0x04: 读一个或多个输入寄存器；
 * 0x05: 写单个线圈寄存器；
 * 0x06: 写单个保持寄存器；
 * 0x0F: 写多个线圈寄存器；
@@ -31,11 +32,11 @@
 ## Summary
 这是DFRobot基于modbus RTU协议为raspberry pi 平台移植的python modbus库。<br>
 
+
 ## Connected
-Hardware conneted table<br>
-## Connected
-Hardware conneted table<br>
- Sensor      |               raspberry pi         |
+Hardware conneted table 
+
+Sensor      |               raspberry pi         |
 ------------ | :-------------------------------: |
 VCC          |                5V                 |
 GND          |                GND                |
