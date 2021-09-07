@@ -33,7 +33,7 @@ This is a modbus RTU libary  for Arduino by DFRobot.<br>
 
 ## Connected
 Hardware conneted table<br>
- Sensor      |               MCU                 |
+Sensor      |               MCU                 |
 ------------ | :-------------------------------: |
 VCC          |                5V                 |
 GND          |                GND                |
