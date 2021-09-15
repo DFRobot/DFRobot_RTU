@@ -2,7 +2,7 @@
 
 * [中文版](./README_CN.md)
 
-Modbus RTU libary for Arduino. The supported modbus commands are as follows：<br>
+Modbus RTU library for Arduino. The supported modbus commands are as follows：<br>
 * 0x01: Read one or multiple coils register;
 * 0x02: Read one or multiple discrete inputs register;
 * 0x03: Read one or multiple holding register;
