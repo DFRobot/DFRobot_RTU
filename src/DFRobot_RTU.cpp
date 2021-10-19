@@ -344,8 +344,8 @@ uint8_t DFRobot_RTU::writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t *da
   }
   //memcpy(temp+5, data, size);
   for(int i = 0; i < regNum; i++){
-     temp[5+i] =  pBuf[2*i + 1];
-     temp[6+i] =  pBuf[2*i] ;
+     temp[5+i*2] =  pBuf[2*i + 1];
+     temp[6+i*2] =  pBuf[2*i] ;
   }
   pRtuPacketHeader_t header = packed(id, eCMD_WRITE_MULTI_HOLDING, temp, sizeof(temp));
   sendPackage(header);
