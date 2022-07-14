@@ -384,6 +384,7 @@ void DFRobot_RTU::sendPackage(pRtuPacketHeader_t header){
   clearRecvBuffer();
   if(header != NULL){
       _s->write((uint8_t *)&(header->id), header->len);
+      _s->flush();
       delay(5);
       if(header->id == 0){
         delay(_timeout);
