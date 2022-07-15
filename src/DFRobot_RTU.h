@@ -76,6 +76,7 @@ public:
  * @param s:  The class pointer object of Abstract class， here you can fill in the pointer to the serial port object.
  * @param timeout: Recving timeout time, unit ms,default 100ms
  */
+  DFRobot_RTU(Stream *s,int dePin);
   DFRobot_RTU(Stream *s);
   DFRobot_RTU();
   ~DFRobot_RTU(){}
@@ -341,5 +342,6 @@ public:
 private:
   uint32_t _timeout;
   Stream *_s;
+  int _dePin;
 };
 #endif
