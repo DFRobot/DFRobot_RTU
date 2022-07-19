@@ -411,7 +411,6 @@ DFRobot_RTU::pRtuPacketHeader_t DFRobot_RTU::packed(uint8_t id, uint8_t cmd, voi
 void DFRobot_RTU::sendPackage(pRtuPacketHeader_t header){
   clearRecvBuffer();
   if(header != NULL){
-<<<<<<< HEAD
     if(_dePin>0){
       digitalWrite(_dePin,HIGH);
       delayMicroseconds(50);
@@ -427,15 +426,6 @@ void DFRobot_RTU::sendPackage(pRtuPacketHeader_t header){
       delayMicroseconds(50);
       digitalWrite(_dePin,LOW);
     }
-=======
-      _s->write((uint8_t *)&(header->id), header->len);
-      _s->flush();
-      delay(5);
-      if(header->id == 0){
-        delay(_timeout);
-      }
-      free(header);
->>>>>>> 68c819ba01b921332d8e10e7dcd0e6793c3520f0
   }
 }
 
