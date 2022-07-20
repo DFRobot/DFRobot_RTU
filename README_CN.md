@@ -52,7 +52,7 @@ To use this library, first download the library file, paste it into the \Arduino
 /**
  * @brief DFRobot_RTU构造函数. 传递串口指针.
  * @param s:  串口抽象类指针。
- * @param dePin RS485流控引脚
+ * @param dePin RS485流控引脚,拉低接收，拉高发送
  */
 DFRobot_RTU(Stream *s,int dePin);
 DFRobot_RTU(Stream *s);

@@ -52,9 +52,9 @@ To use this library, first download the library file, paste it into the \Arduino
 /**
  * @brief DFRobot_RTU abstract class constructor. Construct serial port.
  * @param s:  The class pointer object of Abstract class， here you can fill in the pointer to the serial port object.
- * @param depin Depin for RS485 communication
+ * @param dePin: RS485 flow control, pull low to receive, pull high to send.
  */
-DFRobot_RTU(Stream *s,int dePin);
+  DFRobot_RTU(Stream *s,int dePin);
 DFRobot_RTU(Stream *s);
 ~DFRobot_RTU()
 
