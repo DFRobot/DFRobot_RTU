@@ -408,10 +408,7 @@ void DFRobot_RTU::sendPackage(pRtuPacketHeader_t header){
     }
     _s->write((uint8_t *)&(header->id), header->len);
     _s->flush();
-    delay(5);
-    if(header->id == 0){
-      delay(_timeout);
-    }
+    
     free(header);
     if(_dePin>0){
       delayMicroseconds(50);
