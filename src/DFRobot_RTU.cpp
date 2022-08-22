@@ -121,7 +121,6 @@ uint16_t DFRobot_RTU::readInputRegister(uint8_t id, uint16_t reg){
 uint8_t DFRobot_RTU::writeCoilsRegister(uint8_t id, uint16_t reg, bool flag){
   uint16_t val = flag ? 0xFF00 : 0x0000;
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)((val >> 8) & 0xFF), (uint8_t)(val & 0xFF)};
-  // bool re = !flag;
   uint8_t ret = 0;
   if(id > 0xF7){
     RTU_DBG("Device id error");
@@ -130,13 +129,9 @@ uint8_t DFRobot_RTU::writeCoilsRegister(uint8_t id, uint16_t reg, bool flag){
   pRtuPacketHeader_t header = packed(id, eCMD_WRITE_COILS, temp, sizeof(temp));
   sendPackage(header);
   header = recvAndParsePackage(id, (uint8_t)eCMD_WRITE_COILS, reg, &ret);
-  //if((ret == 0) && (header != NULL)){
-  //    if(val == (((header->payload[2] << 8) | header->payload[3]) & 0xFFFF)){
-  //      re = flag;
-  //    }
-  //    free(header);
-  //}
-  //RTU_DBG(val, HEX);
+  if((ret == 0) && (header != NULL)){
+      free(header);
+  }
   return ret;
 }
 uint8_t DFRobot_RTU::writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t val){
@@ -157,11 +152,11 @@ uint8_t DFRobot_RTU::writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t val
   free(data);
   sendPackage(header);
   header = recvAndParsePackage(id, (uint8_t)eCMD_WRITE_HOLDING, reg, &ret);
-  //val = 0xFFFF;
-  //if((ret == 0) && (header != NULL)){
-  //    val = (header->payload[2] << 8) | header->payload[3];
-  //    free(header);
-  //}
+  val = 0xFFFF;
+  if((ret == 0) && (header != NULL)){
+      val = (header->payload[2] << 8) | header->payload[3];
+      free(header);
+  }
   //RTU_DBG(val, HEX);
   return ret;
 }
