@@ -283,16 +283,16 @@ uint8_t DFRobot_RTU::readInputRegister(uint8_t id, uint16_t reg, uint16_t *data,
 uint8_t DFRobot_RTU::writeCoilsRegister(uint8_t id, uint16_t reg, uint16_t regNum, uint8_t *data, uint16_t size){
   uint16_t length = regNum/8 + ((regNum%8) ? 1 : 0);
   if(size < length) return (uint8_t)eRTU_EXCEPTION_ILLEGAL_DATA_VALUE;
-  #if defined(ESP8266)
+  //#if defined(ESP8266)
   uint8_t temp[size + 5];
   temp[0] = (uint8_t)((reg >> 8) & 0xFF);
   temp[1] = (uint8_t)(reg & 0xFF);
   temp[2] = (uint8_t)((regNum >> 8) & 0xFF);
   temp[3] = (uint8_t)(regNum & 0xFF);
   temp[4] = (uint8_t)length;
-  #else
-  uint8_t temp[size + 5] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF),(uint8_t)((regNum >> 8) & 0xFF), (uint8_t)(regNum & 0xFF),(uint8_t)length};
-  #endif
+  //#else
+  //uint8_t temp[size + 5] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF),(uint8_t)((regNum >> 8) & 0xFF), (uint8_t)(regNum & 0xFF),(uint8_t)length};
+  //#endif
   uint8_t ret = 0;
   if(id > 0xF7){
     RTU_DBG("Device id error");
@@ -311,16 +311,16 @@ uint8_t DFRobot_RTU::writeCoilsRegister(uint8_t id, uint16_t reg, uint16_t regNu
 }
 uint8_t DFRobot_RTU::writeHoldingRegister(uint8_t id, uint16_t reg, void *data, uint16_t size){
   if(((size % 2) != 0) || (size > 250) || data == NULL) return (uint8_t)eRTU_EXCEPTION_ILLEGAL_DATA_VALUE;
-  #if defined(ESP8266)
+  //#if defined(ESP8266)
   uint8_t temp[size + 5];
   temp[0] = (uint8_t)((reg >> 8) & 0xFF);
   temp[1] = (uint8_t)(reg & 0xFF);
   temp[2] = (uint8_t)(((size/2) >> 8) & 0xFF);
   temp[3] = (uint8_t)((size/2) & 0xFF);
   temp[4] = (uint8_t)size;
-  #else
-  uint8_t temp[size + 5] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)(((size/2) >> 8) & 0xFF), (uint8_t)((size/2) & 0xFF),(uint8_t)size};
-  #endif
+  //#else
+  //uint8_t temp[size + 5] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)(((size/2) >> 8) & 0xFF), (uint8_t)((size/2) & 0xFF),(uint8_t)size};
+  //#endif
   uint8_t ret = 0;
   if(id > 0xF7){
     RTU_DBG("Device id error");
@@ -341,16 +341,16 @@ uint8_t DFRobot_RTU::writeHoldingRegister(uint8_t id, uint16_t reg, void *data, 
 uint8_t DFRobot_RTU::writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t *data, uint16_t regNum){
   uint16_t size = regNum * 2;
   uint8_t *pBuf = (uint8_t *)data;
-  #if defined(ESP8266)
+  //#if defined(ESP8266)
   uint8_t temp[size + 5];
   temp[0] = (uint8_t)((reg >> 8) & 0xFF);
   temp[1] = (uint8_t)(reg & 0xFF);
   temp[2] = (uint8_t)(((size/2) >> 8) & 0xFF);
   temp[3] = (uint8_t)((size/2) & 0xFF);
   temp[4] = (uint8_t)size;
-  #else
-  uint8_t temp[size + 5] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)(((size/2) >> 8) & 0xFF), (uint8_t)((size/2) & 0xFF),(uint8_t)size};
-  #endif
+  //#else
+  //uint8_t temp[size + 5] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)(((size/2) >> 8) & 0xFF), (uint8_t)((size/2) & 0xFF),(uint8_t)size};
+  //#endif
   uint8_t ret = 0;
   if(id > 0xF7){
     RTU_DBG("Device id error");
