@@ -406,7 +406,7 @@ void DFRobot_RTU::sendPackage(pRtuPacketHeader_t header){
     
     free(header);
     if(_dePin>0){
-      delayMicroseconds(50);
+      //delayMicroseconds(50);
       digitalWrite(_dePin,LOW);
     }
   }
