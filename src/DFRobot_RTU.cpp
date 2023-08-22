@@ -145,9 +145,10 @@ uint8_t DFRobot_RTU::writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t val
   uint8_t *data =NULL;
   data=(uint8_t *)malloc(sizeof(sRtuPacketHeader_t));
   memcpy(data,header,sizeof(sRtuPacketHeader_t));
-  while(data!=NULL){
-    RTU_DBG(*data, HEX);
-    data++;
+  uint8_t *debug = data;
+  while(debug!=NULL){
+    RTU_DBG(*debug, HEX);
+    debug++;
   }
   free(data);
   sendPackage(header);
