@@ -142,14 +142,12 @@ uint8_t DFRobot_RTU::writeHoldingRegister(uint8_t id, uint16_t reg, uint16_t val
     return 0;
   }
   pRtuPacketHeader_t header = packed(id, eCMD_WRITE_HOLDING, temp, sizeof(temp));
-  uint8_t *data =NULL;
-  data=(uint8_t *)malloc(sizeof(sRtuPacketHeader_t));
-  memcpy(data,header,sizeof(sRtuPacketHeader_t));
-  while(data!=NULL){
-    RTU_DBG(*data, HEX);
-    data++;
-  }
-  free(data);
+  //uint8_t *data = (uint8_t *)header;
+  //for (int i = 0; i < sizeof(sRtuPacketHeader_t); i++){
+  //  if (data != NULL) RTU_DBG(*data, HEX);
+  //  data++;
+  //}
+  
   sendPackage(header);
   header = recvAndParsePackage(id, (uint8_t)eCMD_WRITE_HOLDING, reg, &ret);
   val = 0xFFFF;
