@@ -44,7 +44,7 @@ void setup() {
 #if defined(ARDUINO_AVR_UNO)||defined(ESP8266)
     mySerial.begin(9600);
 #elif defined(ESP32)
-  Serial1.begin(9600, SERIAL_8N1, /*rx =*/D3, /*tx =*/D2);
+  Serial1.begin(9600, SERIAL_8N1, /*rx =*/3, /*tx =*/1);
 #else
   Serial1.begin(9600);
 #endif
@@ -75,5 +75,3 @@ void loop() {
     Serial.println("done\n");
   delay(1000);           // wait 1 seconds for next scan
 }
-
-
