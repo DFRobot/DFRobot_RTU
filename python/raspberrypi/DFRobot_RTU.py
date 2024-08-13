@@ -494,7 +494,7 @@ class DFRobot_RTU(object):
         if head[1] & 0x80:
           index = 5
         else:
-          if head[1] < 4:
+          if head[1] < 5:
             if head[2] != (val & 0xFF):
               index = 0
               remain = 0
