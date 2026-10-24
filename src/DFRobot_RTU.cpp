@@ -42,7 +42,7 @@ bool DFRobot_RTU::readCoilsRegister(uint8_t id, uint16_t reg){
   bool val = false;
   uint8_t *pData = NULL;
   uint8_t ret = 0;
-  if((id == 0) && (id > 0xF7)){
+  if((id == 0) || (id > 0xF7)){
     RTU_DBG("Device id error");
     return 0;
   }
@@ -62,7 +62,7 @@ bool DFRobot_RTU::readDiscreteInputsRegister(uint8_t id, uint16_t reg){
   uint8_t *pData = NULL;
   bool val = false;
   uint8_t ret = 0;
-  if((id == 0) && (id > 0xF7)){
+  if((id == 0) || (id > 0xF7)){
     RTU_DBG("Device id error");
     return 0;
   }
@@ -83,7 +83,7 @@ uint16_t DFRobot_RTU::readHoldingRegister(uint8_t id, uint16_t reg){
   uint16_t val = 0;
   uint8_t *pData = NULL;
   uint8_t ret = 0;
-  if((id == 0) && (id > 0xF7)){
+  if((id == 0) || (id > 0xF7)){
     RTU_DBG("Device id error");
     return 0;
   }
@@ -104,7 +104,7 @@ uint16_t DFRobot_RTU::readInputRegister(uint8_t id, uint16_t reg){
   uint16_t val = 0;
   uint8_t *pData = NULL;
   uint8_t ret = 0;
-  if((id == 0) && (id > 0xF7)){
+  if((id == 0) || (id > 0xF7)){
     RTU_DBG("Device id error");
     return 0;
   }
@@ -170,7 +170,7 @@ uint8_t DFRobot_RTU::readCoilsRegister(uint8_t id, uint16_t reg, uint16_t regNum
   uint8_t length = regNum/8 + ((regNum%8) ? 1 : 0);
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)((regNum >> 8) & 0xFF), (uint8_t)(regNum & 0xFF)};
   uint8_t ret = 0;
-  if((id == 0) && (id > 0xF7)){
+  if((id == 0) || (id > 0xF7)){
     RTU_DBG("Device id error");
     return eRTU_ID_ERROR;
   }
@@ -190,7 +190,7 @@ uint8_t DFRobot_RTU::readDiscreteInputsRegister(uint8_t id, uint16_t reg, uint16
   uint8_t length = regNum/8 + ((regNum%8) ? 1 : 0);
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)((regNum >> 8) & 0xFF), (uint8_t)(regNum & 0xFF)};
   uint8_t ret = 0;
-  if((id == 0) && (id > 0xF7)){
+  if((id == 0) || (id > 0xF7)){
     RTU_DBG("Device id error");
     return eRTU_ID_ERROR;
   }
@@ -210,7 +210,7 @@ uint8_t DFRobot_RTU::readHoldingRegister(uint8_t id, uint16_t reg, void *data, u
   uint8_t length = size/2 + ((size%2) ? 1 : 0);
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)((length >> 8) & 0xFF), (uint8_t)(length & 0xFF)};
   uint8_t ret = 0;
-  if((id == 0) && (id > 0xF7)){
+  if((id == 0) || (id > 0xF7)){
     RTU_DBG("Device id error");
     return eRTU_ID_ERROR;
   }
@@ -228,7 +228,7 @@ uint8_t DFRobot_RTU::readInputRegister(uint8_t id, uint16_t reg, void *data, uin
   uint8_t length = size/2 + ((size%2) ? 1 : 0);
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)((length >> 8) & 0xFF), (uint8_t)(length & 0xFF)};
   uint8_t ret = 0;
-  if((id == 0) && (id > 0xF7)){
+  if((id == 0) || (id > 0xF7)){
     RTU_DBG("Device id error");
     return eRTU_ID_ERROR;
   }
@@ -246,7 +246,7 @@ uint8_t DFRobot_RTU::readInputRegister(uint8_t id, uint16_t reg, void *data, uin
 uint8_t DFRobot_RTU::readHoldingRegister(uint8_t id, uint16_t reg, uint16_t *data, uint16_t regNum){
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)((regNum >> 8) & 0xFF), (uint8_t)(regNum & 0xFF)};
   uint8_t ret = 0;
-  if((id == 0) && (id > 0xF7)){
+  if((id == 0) || (id > 0xF7)){
     RTU_DBG("Device id error");
     return eRTU_ID_ERROR;
   }
@@ -267,7 +267,7 @@ uint8_t DFRobot_RTU::readHoldingRegister(uint8_t id, uint16_t reg, uint16_t *dat
 uint8_t DFRobot_RTU::readInputRegister(uint8_t id, uint16_t reg, uint16_t *data, uint16_t regNum){
   uint8_t temp[] = {(uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF), (uint8_t)((regNum >> 8) & 0xFF), (uint8_t)(regNum & 0xFF)};
   uint8_t ret = 0;
-  if((id == 0) && (id > 0xF7)){
+  if((id == 0) || (id > 0xF7)){
     RTU_DBG("Device id error");
     return eRTU_ID_ERROR;
   }
