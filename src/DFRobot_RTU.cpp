@@ -5,8 +5,8 @@
  * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @licence     The MIT License (MIT)
  * @author [Arya](xue.peng@dfrobot.com)
- * @version  V1.0
- * @date  2021-07-16
+ * @version  V1.0.7
+ * @date  2026-10-26
  * @https://github.com/DFRobot/DFRobot_RTU
  */
 #include <Arduino.h>

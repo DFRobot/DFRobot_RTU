@@ -341,6 +341,9 @@ raspberry          |      X       |      √       |
 - Data 2021-07-17
 - Version V1.0
 
+- Date 2026-10-26
+- Version V1.0.7: fix the device ID check in the read functions so that the broadcast address and IDs above 0xF7 are rejected with an ID error
+
 ## Credits
 
 Written by(xue.peng@dfrobot.com), 2021. (Welcome to our [website](https://www.dfrobot.com/))
