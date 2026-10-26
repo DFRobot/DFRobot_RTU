@@ -57,7 +57,7 @@ void setup() {
       Serial.print("new ID1 is 0x");
       Serial.println(ret, HEX);
       //方法2：已知从机的地址为0x10，将其修改为0x20
-      modbus.writeHoldingRegister(/*id =*/0x00, /*reg =*/DEVICE_ID_REG, /*val =*/0x20);
+      modbus.writeHoldingRegister(/*id =*/0x10, /*reg =*/DEVICE_ID_REG, /*val =*/0x20);
       delay(1000);
       ret = modbus.readHoldingRegister(0x20, DEVICE_ID_REG);
       Serial.print("new ID2 is 0x");
